@@ -3,6 +3,7 @@ package com.example.drawingapplication
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 
@@ -14,6 +15,7 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
     private var mybrushSize: Float = 0.toFloat()
     private var canvas: Canvas? = null
     private var color = Color.BLACK
+    private val myPath = ArrayList<CustomPath>()
 
     init {
         setUpDrawing()
@@ -23,11 +25,10 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
         myDrawpaint = Paint()
         myDrawPath = CustomPath(color, mybrushSize)
         myDrawpaint!!.color = color
-        myDrawpaint!!.style = Paint.Style.FILL_AND_STROKE
+        myDrawpaint!!.style = Paint.Style.STROKE
         myDrawpaint!!.strokeCap = Paint.Cap.ROUND
         myDrawpaint!!.strokeJoin = Paint.Join.ROUND
         myCanvaspaint = Paint(Paint.DITHER_FLAG)
-        mybrushSize = 20.toFloat()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -40,6 +41,12 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
         super.onDraw(canvas)
 
         canvas.drawBitmap(myCanvasBitmap!!, 0F, 0F, myCanvaspaint)
+
+        for (path in myPath) {
+            myDrawpaint?.strokeWidth = path!!.brushThincknes
+            myDrawpaint?.color = path!!.color
+            canvas.drawPath(path, myDrawpaint!!)
+        }
         myDrawPath.let {
             myDrawpaint?.strokeWidth = myDrawPath!!.brushThincknes
             myDrawpaint?.color = myDrawPath!!.color
@@ -65,6 +72,7 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
                     myDrawPath!!.lineTo(touchx, touchy)
             }
             MotionEvent.ACTION_UP -> {
+                myPath.add(myDrawPath!!)
                 myDrawPath = CustomPath(color, mybrushSize)
             }
             else -> return false
@@ -72,6 +80,15 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
         }
         invalidate()
         return true
+    }
+
+    fun setSizeForBrush(newSize: Float) {
+        mybrushSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            newSize,
+            resources.displayMetrics
+        )
+        myDrawpaint!!.strokeWidth = mybrushSize
     }
 
     internal inner class CustomPath(var color: Int, var brushThincknes: Float) : Path() {
