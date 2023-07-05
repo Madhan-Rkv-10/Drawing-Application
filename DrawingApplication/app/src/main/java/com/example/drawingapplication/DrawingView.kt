@@ -43,8 +43,8 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
         canvas.drawBitmap(myCanvasBitmap!!, 0F, 0F, myCanvaspaint)
 
         for (path in myPath) {
-            myDrawpaint?.strokeWidth = path!!.brushThincknes
-            myDrawpaint?.color = path!!.color
+            myDrawpaint?.strokeWidth = path.brushThincknes
+            myDrawpaint?.color = path.color
             canvas.drawPath(path, myDrawpaint!!)
         }
         myDrawPath.let {
