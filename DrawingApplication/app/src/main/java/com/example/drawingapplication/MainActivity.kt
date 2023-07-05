@@ -1,18 +1,26 @@
 package com.example.drawingapplication
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView? = null
+    private var myActiveColorImageButton: ImageButton? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         drawingView = findViewById(R.id.drawing_view)
         drawingView?.setSizeForBrush(20.toFloat())
+        val linearLayout = findViewById<LinearLayout>(R.id.color_pallete)
+        myActiveColorImageButton = linearLayout[1] as ImageButton
+        myActiveColorImageButton!!.setImageDrawable(
+            ContextCompat.getDrawable(this, R.drawable.pallet_pressed)
+        )
         val ib_brush: ImageButton = findViewById(R.id.ib_brush)
         ib_brush.setOnClickListener {
             showSizeButtonDialog()
