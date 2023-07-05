@@ -56,6 +56,11 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
         canvas.drawPath(myDrawPath!!, myDrawpaint!!)
     }
 
+    fun setColor(newColor: String) {
+        color = Color.parseColor(newColor)
+        myDrawpaint?.color = color
+    }
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val touchx = event?.x
         val touchy = event?.y

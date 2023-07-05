@@ -3,8 +3,10 @@ package com.example.drawingapplication
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 
@@ -26,6 +28,34 @@ class MainActivity : AppCompatActivity() {
             showSizeButtonDialog()
         }
 
+    }
+
+    fun paintClicked(view: View) {
+//        Toast.makeText(this,"Onclied",Toast.LENGTH_SHORT).show()
+        if (view !== myActiveColorImageButton) {
+            // Update the color
+            val imageButton = view as ImageButton
+            // Here the tag is used for swaping the current color with previous color.
+            // The tag stores the selected view
+            val colorTag = imageButton.tag.toString()
+            // The color is set as per the selected tag here.
+            drawingView?.setColor(colorTag)
+            // Swap the backgrounds for last active and currently active image button.
+            imageButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this, R.drawable.pallet_pressed
+                )
+            )
+            myActiveColorImageButton?.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.pallet_normal
+                )
+            )
+
+            //Current view is updated with selected view in the form of ImageButton.
+            myActiveColorImageButton = view
+        }
     }
 
     private fun showSizeButtonDialog() {
