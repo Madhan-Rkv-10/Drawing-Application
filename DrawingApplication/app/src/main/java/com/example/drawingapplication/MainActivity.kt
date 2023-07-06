@@ -14,6 +14,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import android.Manifest
+import android.content.Intent
+import android.provider.MediaStore
+import android.widget.ImageView
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView? = null
@@ -29,6 +32,9 @@ class MainActivity : AppCompatActivity() {
                         "Permission granted now you can read the storage files.",
                         Toast.LENGTH_LONG
                     ).show()
+                    val pickIntent =
+                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    galleryImageLauncher.launch(pickIntent)
                     //perform operation
                 } else {
                     //Todo 4: Displaying another toast if permission is not granted and this time focus on
@@ -40,6 +46,13 @@ class MainActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         ).show()
                 }
+            }
+        }
+    val galleryImageLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                val imageBAckGround: ImageView = findViewById(R.id.iv_background)
+                imageBAckGround.setImageURI(result.data?.data)
             }
         }
 
