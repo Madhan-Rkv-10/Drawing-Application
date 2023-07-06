@@ -72,7 +72,12 @@ class MainActivity : AppCompatActivity() {
         }
         val ib_gallery = findViewById<ImageButton>(R.id.ic_gallery)
         ib_gallery.setOnClickListener {
+            print("Madhansd")
             RequestStoragePermission()
+        }
+        val ib_undo = findViewById<ImageButton>(R.id.ib_undo)
+        ib_undo.setOnClickListener {
+            drawingView?.onCLickUndo()
         }
 
     }

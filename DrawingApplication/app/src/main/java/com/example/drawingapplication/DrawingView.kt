@@ -16,9 +16,19 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
     private var canvas: Canvas? = null
     private var color = Color.BLACK
     private val myPath = ArrayList<CustomPath>()
+    private val myUndoPath = ArrayList<CustomPath>()
 
     init {
         setUpDrawing()
+    }
+
+    fun onCLickUndo() {
+        if (myPath.size > 0) {
+            myUndoPath.add(
+                myPath.removeAt(myPath.size - 1)
+            )
+            invalidate()
+        }
     }
 
     private fun setUpDrawing() {
