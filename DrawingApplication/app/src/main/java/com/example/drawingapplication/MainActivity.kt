@@ -29,6 +29,7 @@ import java.io.FileOutputStream
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView? = null
     private var myActiveColorImageButton: ImageButton? = null
+    private var customProgressDialog: Dialog? = null
     val requestPermission: ActivityResultLauncher<Array<String>> =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permission ->
             permission.entries.forEach {
@@ -89,9 +90,10 @@ class MainActivity : AppCompatActivity() {
         }
         val ib_save = findViewById<ImageButton>(R.id.ib_save)
         ib_save.setOnClickListener {
-            if (isReadStorageAllowed()){
+            if (isReadStorageAllowed()) {
+                isLoading()
                 //launch a coroutine block
-                lifecycleScope.launch{
+                lifecycleScope.launch {
                     //reference the frame layout
                     val flDrawingView: FrameLayout = findViewById(R.id.fl_drawing_view_container)
                     //Save the image to the device
@@ -101,13 +103,31 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun isLoading() {
+        if (customProgressDialog != null) {
+            customProgressDialog?.dismiss()
+            customProgressDialog = null
+        } else {
+            customProgressDialog = Dialog(this)
+            customProgressDialog?.setContentView(R.layout.custom_dialogs)
+            customProgressDialog?.show()
+        }
+    }
+
+    //    private fun cancelProgressDialog() {
+//        if (customProgressDialog != null) {
+//            customProgressDialog?.dismiss()
+//            customProgressDialog = null
+//        }
+//    }
     private fun isReadStorageAllowed(): Boolean {
 
         val result = ContextCompat.checkSelfPermission(
             this, Manifest.permission.READ_EXTERNAL_STORAGE
         )
 
-      return result == PackageManager.PERMISSION_GRANTED
+        return result == PackageManager.PERMISSION_GRANTED
     }
 
     fun paintClicked(view: View) {
@@ -265,6 +285,7 @@ class MainActivity : AppCompatActivity() {
                     result = f.absolutePath // The file absolute path is return as a result.
                     //We switch from io to ui thread to show a toast
                     runOnUiThread {
+                        isLoading()
                         if (!result.isEmpty()) {
                             Toast.makeText(
                                 this@MainActivity,
