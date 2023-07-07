@@ -23,9 +23,9 @@
             android:id="@+id/iv_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/flutter"
+            android:scaleType="centerCrop"
 
-            android:scaleType="centerCrop" />
+            tools:src="@drawable/flutter" />
 
         <com.example.drawingapplication.DrawingView
             android:id="@+id/drawing_view"
@@ -44,17 +44,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fl_drawing_view_container">
-
-        <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="2dp"
-            android:background="@color/yellow"
-            android:onClick="paintClicked"
-            android:scaleType="fitXY"
-            android:src="@drawable/pallet_normal"
-            android:tag="@color/yellow" />
-
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -74,8 +63,19 @@
             android:onClick="paintClicked"
             android:scaleType="fitXY"
             android:src="@drawable/pallet_normal"
-
             android:tag="@color/black" />
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="2dp"
+            android:background="@color/yellow"
+            android:onClick="paintClicked"
+            android:scaleType="fitXY"
+            android:src="@drawable/pallet_normal"
+            android:tag="@color/yellow" />
+
+
+
 
         <ImageButton
             android:layout_width="30dp"
